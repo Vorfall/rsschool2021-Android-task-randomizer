@@ -39,17 +39,15 @@ class FirstFragment : Fragment() {
         val max = view.findViewById<EditText>(R.id.max_value)
 
         generateButton?.setOnClickListener {
-            val startNum = min.text.toString()
-            val finalNum = max.text.toString()
+            var startNum = min.text.toString()
+            var finalNum = max.text.toString()
             var errorMessage: String? = ""
-            if (startNum.toInt() > finalNum.toInt()){
-                errorMessage = "Максимальное значение должно быть больше минимального"
-            }
             if (startNum.isEmpty() || finalNum.isEmpty()){
                 errorMessage = "Не все поля заполнены"
-            }
-            if (startNum.toLong() > Int.MAX_VALUE || finalNum.toLong() > Int.MAX_VALUE){
-                errorMessage = "Превышен диапазон значений"
+            } else if ( startNum.toLong() > Int.MAX_VALUE || finalNum.toLong() > Int.MAX_VALUE){
+                errorMessage = "Выход за диапазон значений"
+            } else if (startNum.toInt() >finalNum.toInt()){
+                errorMessage = "Максимальное значение должно быть больше минимального"
             }
             if (errorMessage.isNullOrEmpty()){
                 listener?.openSecondFragment(startNum.toInt(), finalNum.toInt())
