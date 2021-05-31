@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
+import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
+
+public class MainActivity extends AppCompatActivity implements FragmentChanger {
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -16,14 +19,22 @@ public class MainActivity extends AppCompatActivity {
         openFirstFragment(0);
     }
 
-    private void openFirstFragment(int previousNumber) {
+    @Override
+    public void openFirstFragment(int previousNumber) {
+        getSupportFragmentManager().popBackStack(null, POP_BACK_STACK_INCLUSIVE);
         final Fragment firstFragment = FirstFragment.newInstance(previousNumber);
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, firstFragment);
-        // TODO: invoke function which apply changes of the transaction
+        transaction.commit();
     }
 
-    private void openSecondFragment(int min, int max) {
-        // TODO: implement it
+    @Override
+    public void openSecondFragment(int min, int max) {
+        final Fragment secondFragment = SecondFragment.newInstance(min, max);
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, secondFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
+
 }
